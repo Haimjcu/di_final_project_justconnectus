@@ -1,0 +1,15 @@
+{
+  "error-with-status": "A {{statusCode}} error occurred on server",
+  "error-without-status": "An error occurred on the server",
+  "InvalidUpdateError": "Invalid Update",
+  "UsernameAlreadyExists": "User already exists",
+  "BadRequestError": "Bad Request",
+  "DuplicateEntryError": "Duplicate entry",
+  "InvalidDomain": "Invalid domain",
+  "UnauthorizedError": "Unauthorized",
+  "access_denied": "Access Denied",
+  "you_dont_have_permission": "You don’t have permission",
+  "to_access": " to access",
+  "on_this_server": "on this server",
+  "min_password": "Password must be at least 8 characters"
+}
