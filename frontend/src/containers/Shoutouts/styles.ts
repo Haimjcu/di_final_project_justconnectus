@@ -58,7 +58,7 @@ cardContainer: {
     width: "100%",
     border: "none",
     display: "flex",
-    alignItems: "center",
+    flexDirection: "column",
     "@media only screen and (max-width:768px)": {
       display: "flex",
       alignItems: "center",
@@ -67,7 +67,7 @@ cardContainer: {
       border: "1px solid #E3E3E4",
     },
   },
-  details: {
+  detailsContainer: {
     "@media only screen and (max-width:767px)": {
       marginLeft: "0.75rem",
       marginRight: "0.75rem",
@@ -110,6 +110,17 @@ cardContainer: {
     "@media only screen and (max-width:768px)": {
         marginRight: "0",
       },
+  },
+
+  details: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+  },
+  detailsHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 
 }));

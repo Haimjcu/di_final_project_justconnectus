@@ -16,6 +16,7 @@ import {
   } from "./type";
 
   export const updateShoutout = function (data: any) {
+    console.log(`haim updateShoutout ${JSON.stringify(data)}`);
     const { V1, SHOUTOUTS, CREATE_SHOUTOUT } = API_END_POINTS;
     const url = `${V1}${SHOUTOUTS}${CREATE_SHOUTOUT}`;
     const apiArgs = {
@@ -34,12 +35,12 @@ import {
   };
 
   export const loadShoutouts = function (payload: QueryParamPayload) {
-    const { V1, CONTACTS, GET_ALL_REQUESTS, OFFSET, LIMIT, SEARCH_TERM } =
+    const { V1, SHOUTOUTS, GET_ALL_SHOUTOUTS, OFFSET, LIMIT, SEARCH_TERM } =
       API_END_POINTS;
     const searchQuery = payload?.searchTerm
       ? `${SEARCH_TERM}${payload.searchTerm}`
       : "";
-    const url = `${V1}${CONTACTS}${GET_ALL_REQUESTS}${OFFSET}${payload.offset}${LIMIT}${payload.limit}${searchQuery}`;
+    const url = `${V1}${SHOUTOUTS}${GET_ALL_SHOUTOUTS}${OFFSET}${payload.offset}${LIMIT}${payload.limit}${searchQuery}`;
     const apiArgs = {
       API_CALL: {
         method: API_METHODS.GET,

@@ -55,6 +55,7 @@ const API_END_POINTS = {
   CREATE_SHOUTOUT: "/createShoutout",
   UPDATE_SHOUTOUT: "/updateShoutout",
   DELETE_SHOUTOUT: "/deleteShoutout",
+  GET_ALL_SHOUTOUTS: "/getAllShoutouts",
 };
 
 const API_METHODS = {

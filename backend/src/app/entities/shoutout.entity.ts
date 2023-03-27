@@ -1,13 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import appUtilities from "../utilities/app.utilities";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "./base/baseEntity";
+import { ShoutoutSkills } from "./shoutout.skills.entity";
 
-@Entity({ name: "shoutout" })
+@Entity({ name: "shoutout_header" })
 export class Shoutouts extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ name: "title" })
+  @Column()
   public title: string;
 
   @Column()
@@ -21,4 +21,9 @@ export class Shoutouts extends BaseEntity {
 
   @Column({ name: "is_active", default: true })
   public isActive: boolean;
+
+  @OneToMany((type: string) => ShoutoutSkills, "shoutoutHeader", {
+    cascade: ["insert"],
+  })
+  public skills: ShoutoutSkills[];
 }

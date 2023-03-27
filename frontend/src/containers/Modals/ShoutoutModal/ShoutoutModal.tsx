@@ -11,18 +11,22 @@ import {
   FormControl,
   Grid,
   Modal,
+  TextField,
   Typography,
 } from "@material-ui/core";
 import { useTranslation } from "@Translations";
 import clsx from "clsx";
 import { useFormik } from "formik";
 import Close from "icons/Close";
-import { ShoutoutStatus } from "@Utils/constants";
+import { initialState } from "@Store/rootReducer";
 import React, {useEffect,useState, useMemo} from "react";
+import { useSelector } from "react-redux";
+import { ModalType } from "@Utils/constants";
 
 export default function ContactInfo(props: any) {
   const {
     open,
+    getSkills,
     title,
     description,
     skills,
@@ -39,6 +43,9 @@ export default function ContactInfo(props: any) {
   const [selectedSkills, setSelctedSkills] = useState<any[]>();
   const [countries, setCountries] = useState<optionType[]>([]);
   const [states, setStates] = useState<optionType[]>([]);
+  const isLoading = useSelector(
+    (state: typeof initialState) => state.shoutout.isLoading,
+  );
   const israelStates = [
     {
       label: 'Judea',
@@ -50,11 +57,12 @@ export default function ContactInfo(props: any) {
     } as optionType
   ]
 
-  const newSkills = selectedSkills || []
-  .filter((x: optionType) =>
-    skills.some((y: { skill: string }) => x.value === y.skill),
-  )
-  .map((x: optionType) => x.value);
+  useEffect(() => {
+    getSkills({ offset: 0, limit: 2000 });
+  }, [getSkills]);
+
+
+  const newSkills = selectedSkills?.map((item) => item.value);
 
   const formik = useFormik({
     initialValues: {
@@ -62,11 +70,10 @@ export default function ContactInfo(props: any) {
       description,
       country,
       state,
-      newSkills,
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
-      const response = await updateShoutout(values, ShoutoutStatus.CREATE);
+      const response = await updateShoutout({title: values.title , description: values.description,country: values.country,state: values.state, skills: newSkills});
       if (response.success) {
         handleClose();
         showNotification({
@@ -74,6 +81,7 @@ export default function ContactInfo(props: any) {
           message: t("common:saved_successfully"),
         });
       } else {
+        console.log(`haim error ${JSON.stringify(response)}`);
         showNotification({
           type: "error",
           message: t("common:something_wrong"),
@@ -137,7 +145,7 @@ export default function ContactInfo(props: any) {
   }, [formik.values.country, getStatesByCountryCode]);
 
   const handleClose = () => {
-    closeModal();
+    closeModal(ModalType.SHOUTOUT_MODAL);
   };
 
   const handleSkillChange = (items: any[]) => {
@@ -181,12 +189,15 @@ export default function ContactInfo(props: any) {
                 placeholder=""
                 label="Title"
               />
-              <CustomInputField
-                name="description"
-                onChange={formik.handleChange}
-                value={formik.values.description}
-                placeholder=""
-                label="Description"
+              <TextField
+                  name="description"
+                  onChange={formik.handleChange}
+                  value={formik.values.description}
+                  label="Description"
+                  multiline
+                  variant="filled"
+                  minRows={5}
+                  inputProps={{ maxLength: 1500 }}
               />
 
                 <AutoCompleteTag

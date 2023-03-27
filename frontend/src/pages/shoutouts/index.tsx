@@ -6,5 +6,9 @@ const ShoutoutsPage = () => {
   return <Shoutouts />;
 };
 
+ShoutoutsPage.getInitialProps = () => {
+  return { namespacesRequired: ["common", "error"] };
+};
+
 
 export default PrivateRoute(ShoutoutsPage);

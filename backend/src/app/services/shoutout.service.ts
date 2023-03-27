@@ -1,41 +1,41 @@
-import { plainToClass } from "class-transformer";
 import { getCustomRepository } from "typeorm";
-import { Shoutout } from "../entities/shoutout.entity";
-import { AlreadyExistsError } from "../errors/already.exists.error";
-import { InvalidItemError } from "../errors/invalid.item.error";
-import { QueryParams } from "../models/query.params.model";
 import { ShoutoutRepository } from "../repositories/shoutout.repository";
-import commonUtilities from "../utilities/common.utilities";
-import contactMappingUtilities from "../utilities/contact.mapping.utilities";
+import shoutoutUtilities from "../utilities/shoutout.utilities";
+import {ShoutoutModel} from "../models/shoutout.models";
 import responseFormatter from "../utilities/response.formatter";
-import {
-  CreateOrUpdateShoutoutModel
-} from "../models";
 
 /**
- * Create Or Update experiance
+ * Create new Shoutout
  *
- * @returns void
+ * @returns SearchMeta
  */
-const createOrUpdateShoutout = async (
-  model: CreateOrUpdateShoutoutModel,
-  userId: number
-) => {
-  let employmentEntity: Employment;
-  employmentEntity = plainToClass(Employment, model);
-  if (!model.id) {
-    employmentEntity.userId = userId;
-    employmentEntity.isActive = true;
-    employmentEntity.createdAt = new Date();
-    employmentEntity.createdBy = userId;
-  }
-  employmentEntity.updatedAt = new Date();
-  employmentEntity.updatedBy = userId;
-  return await getCustomRepository(EmploymentRepository).createOrUpdate(
-    employmentEntity
+const createNewShoutout = async (shoutoutModel: ShoutoutModel, id: number) => {
+  const shoutoutEntity = shoutoutUtilities.mapShoutoutToEntities(
+    shoutoutModel,
+    id
+  );
+  const shoutoutId = await getCustomRepository(
+    ShoutoutRepository
+  ).createShoutout(shoutoutEntity);
+  return { shoutoutId };
+};
+
+/**
+ * Get All contacts
+ *
+ * @returns Request
+ */
+const getAllShoutouts = async (userId: number) => {
+  const {shoutouts} = await getCustomRepository(
+    ShoutoutRepository
+  ).getShoutouts( userId);
+  return responseFormatter.formatResponse(
+    shoutouts,
+    0,0,0
   );
 };
 
 export default {
-  createOrUpdateShoutout,
+  createNewShoutout,
+  getAllShoutouts,
 };

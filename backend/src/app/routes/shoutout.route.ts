@@ -7,7 +7,8 @@ const router = express.Router();
 router.post(
     "/createShoutout",
     authorize([]),
-    shoutoutController.createOrUpdateShoutout
+    shoutoutController.createNewShoutout
   );
+  router.get("/getAllShoutouts", authorize([]), shoutoutController.getAllShoutouts);
 
 export default router;

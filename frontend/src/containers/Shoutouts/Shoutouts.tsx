@@ -1,3 +1,4 @@
+import Loader from "@Components/Loader";
 import EditSquare from "@Components/SVG/EditSquare";
 import globalUseStyles from "@Hooks/styleHooks";
 import { skillStyle } from "@Containers/Profile/ManageSkills/styles";
@@ -13,7 +14,7 @@ const Shoutouts = (props: any) => {
   const globalClasses = globalUseStyles();
   const skillClasses = skillStyle();
   const { t } = useTranslation();
-  const { fetchUser, openModal } = props;
+  const { loadShoutouts,shoutouts, shoutoutsCount, isLoading, userId, openModal } = props;
   const classes = useStyles();
 
   const handleCreateShoutout = () => {
@@ -21,31 +22,14 @@ const Shoutouts = (props: any) => {
   };
 
   useEffect(() => {
-    fetchUser();
-  });
+    loadShoutouts({ limit: 0, offset: 0, userId });
+  },[shoutoutsCount]);
 
-  const shoutoutList = [{
-    id: 99,
-    title: "java developer",
-    description: "Our client is a UK subsidiary of a global financial house working in multiple markets and asset classes.",
-    skills: [{id:1, name:"thebest"},{id:2, name:"best"},{id:3, name:"tshoutet"},{id:4, name:"thebdddest"},{id:5, name:"thebohyearest"}],
-  },
-  {
-    id: 98,
-    title: "java developer",
-    description: "Our client is a UK subsidiary of a global financial house working in multiple markets and asset classes.",
-    skills: [{id:1, name:"thebest"}],
-  },
-  {
-    id: 97,
-    title: "java developer",
-    description: "Our client is a UK subsidiary of a global financial house working in multiple markets and asset classes.",
-    skills: [{id:1, name:"thebest"}],
-  } ]
 
   return (
     <>
     <Box className={classes.shoutoutContainer}>
+
         <Box className={clsx(globalClasses.flex, classes.shoutoutHeader)}>
             <Typography  className={classes.shoutoutTitle} variant="h1">
                 {t("common:my_shoutouts")}{" "}
@@ -59,7 +43,10 @@ const Shoutouts = (props: any) => {
         </Box>
       <Box className={classes.shoutoutInnerContainer}>
         <Grid className={classes.cardCenter} container spacing={2}>
-          {shoutoutList.map((shoutout: any) => (
+        {isLoading ? (
+        <Loader style={{ margin: "150px auto 0", gridColumn: "span 2" }} />
+      ) : (
+          (shoutouts || []).map((shoutout: any) => (
             <Grid key={shoutout.id} item md={4} className={classes.cardContainer}>
               <Box className={classes.card}>
                 <Box
@@ -68,28 +55,38 @@ const Shoutouts = (props: any) => {
                     classes.shoutoutNameWrap,
                   )}
                 >
-                  <Box className={classes.details}>
+                  <Box className={classes.detailsContainer}>
                     <Box
                       mb={1}
                       className={clsx(
                         globalClasses.flex,
                         globalClasses.alignCenter,
+                        classes.details,
                       )}
                     >
-                      <Typography
-                        className={clsx(
-                          classes.shoutoutHeading,
-                        )}
-                        variant="h6"
+                      <Box className={clsx(
+                        globalClasses.flex,
+                        globalClasses.alignCenter,
+                        classes.detailsHeader,
+                      )}
                       >
-                        {`${shoutout?.title}`}
-                      </Typography>
-                      <IconButton>
-                        <EditSquare />
-                    </IconButton>
-                      <Typography variant="body2">
-                      {`${shoutout?.description}`}
-                      </Typography>
+                        <Typography
+                          className={clsx(
+                            classes.shoutoutHeading,
+                          )}
+                          variant="h6"
+                        >
+                          {`${shoutout?.title}`}
+                        </Typography>
+                        <IconButton>
+                          <EditSquare />
+                        </IconButton>
+                      </Box>
+                      <Box>
+                        <Typography variant="body2">
+                        {`${shoutout?.description}`}
+                        </Typography>
+                      </Box>
                     </Box>
                   </Box>
 
@@ -97,15 +94,15 @@ const Shoutouts = (props: any) => {
                   mt={{ xs: "12px", sm: "24px" }}
                   className={clsx(skillClasses.skillSets, classes.skillContainer)}
                 >
-                  {shoutout?.skills?.map((skill: any) => (
+                  {shoutout?.skills?.map((skills: any) => (
                     <Box
-                      key={skill.id}
+                      key={skills?.skill.id}
                       className={clsx(
                         skillClasses.skill,
                         classes.chips,
                       )}
                     >
-                      {skill?.name}
+                      {skills?.skill.skill}
                     </Box>
                   ))}
                 </Box>
@@ -140,7 +137,8 @@ const Shoutouts = (props: any) => {
                 </Box>
               </Box>
             </Grid>
-          ))}
+          ))
+          )}
         </Grid>
       </Box>
     </Box>

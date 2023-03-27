@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import appUtilities from "../utilities/app.utilities";
+import { Column, Entity,   JoinColumn, ManyToOne,PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "./base/baseEntity";
+import { Shoutouts } from "./shoutout.entity";
+import { Skills } from "./skills.entity";
 
-@Entity({ name: "shoutouts" })
-export class Shoutouts extends BaseEntity {
+@Entity({ name: "shoutout_skills" })
+export class ShoutoutSkills extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -13,4 +14,11 @@ export class Shoutouts extends BaseEntity {
   @Column({ name: "skill_id" })
   public skillId: number;
 
+  @ManyToOne((type: string) => Shoutouts, "skills")
+  @JoinColumn({ name: "shoutout_id" })
+  public shoutoutHeader: Shoutouts;
+
+  @ManyToOne((type: string) => Skills, "shoutoutSkills")
+  @JoinColumn({ name: "skill_id" })
+  public skill: Skills;
 }

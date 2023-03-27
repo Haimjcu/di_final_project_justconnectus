@@ -8,6 +8,7 @@ export const ADD_SHOUTOUT_SUCCESS = "SHOUTOUT:ADD_SHOUTOUT_SUCCESS";
 
 export interface ShoutoutState {
     shoutouts: any[];
+    shoutoutsCount: number;
     selectedShoutout: any;
     isLoading: false;
   }

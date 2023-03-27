@@ -10,6 +10,7 @@ import {
 
   export const initialState: ShoutoutState = {
     shoutouts: [],
+    shoutoutsCount: 0,
     selectedShoutout: {},
     isLoading: false,
   };
@@ -32,13 +33,21 @@ import {
             });
           }
           case LOAD_SHOUTOUTS_SUCCESS: {
-            return Object.assign({}, state, {
-                shoutouts: [ ...action.payload ],
+            let allShoutouts =
+            action.payload.data.data.length
+              ? [...action.payload.data.data]
+              : [];
+            allShoutouts.sort((a:any, b:any) => b.num_contacts - a.num_contacts || b.id - a.id); 
+
+            return Object.assign({}, state, {                                      
+                shoutouts: allShoutouts,
+                shoutoutsCount: allShoutouts.length,
+                isLoading: false,
             });
           }
           case ADD_SHOUTOUT_SUCCESS: {
             return Object.assign({}, state, {
-                shoutouts: [ ...action.payload ],
+              shoutoutsCount: state.shoutoutsCount+1,
             });
           }
 
