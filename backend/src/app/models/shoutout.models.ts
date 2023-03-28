@@ -12,4 +12,14 @@ export interface ShoutoutSkillsModel {
   skillId: number;
 }
 
+export interface UpdateShoutoutModel {
+  id?: number;
+  title?: string;
+  description?: string;
+  country: string;
+  state: string;
+  isActive: boolean;
+  skills: number[];
+}
+
 

@@ -1,4 +1,4 @@
-import { loadShoutouts } from "@Store/shoutout/actions";
+import { loadShoutouts, deleteShoutout } from "@Store/shoutout/actions";
 import { showNotification } from "@Store/notification/actions";
 import { openModal } from "@Store/ui/actions";
 import { ModalType } from "@Utils/constants";
@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
 
 import Shoutouts from "./Shoutouts";
+import { SET_SELECTED_SHOUTOUT } from "@Store/shoutout/type";
 
 const mapStateToProps = (state: typeof initialState) => ({
   shoutouts: state.shoutout.shoutouts,
@@ -21,10 +22,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       {
         openModal: () => dispatch(openModal(ModalType.SHOUTOUT_MODAL)),
         showNotification,
+        setSelectedShoutout: (payload) =>
+          dispatch({ type: SET_SELECTED_SHOUTOUT, payload }),
       },
       dispatch,
     ),
     loadShoutouts,
+    deleteShoutout,
   };
 };
 

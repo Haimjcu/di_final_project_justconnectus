@@ -7,7 +7,6 @@ import IController from "../types/IController";
 
 const createNewShoutout: IController = asyncMiddleware(
     async (req: Request, res: Response) => {
-      console.log(`haim controller ${req}`);
       const userId = req.header("id");
       const request = req.body as ShoutoutModel;
       const connectDetail = await shoutoutService.createNewShoutout(
@@ -26,7 +25,34 @@ const createNewShoutout: IController = asyncMiddleware(
     }
   );
 
+
+  const updateShoutout: IController = asyncMiddleware(
+    async (req: Request, res: Response) => {
+      const userId = req.header("id");
+      const request = req.body as ShoutoutModel;
+      const shoutoutId = req.body.id;
+      const connectDetail = await shoutoutService.updateShoutout(
+        request,
+        Number(userId),
+        Number(shoutoutId)
+      );
+      ApiResponse.result(res, connectDetail, OK);
+    }
+  );
+
+  const deleteShoutout: IController = asyncMiddleware(
+    async (req: Request, res: Response) => {
+      const shoutoutId = req.body.shoutoutId;
+      const connectDetail = await shoutoutService.deleteShoutout(
+        Number(shoutoutId)
+      );
+      ApiResponse.result(res, connectDetail, OK);
+    }
+  );
+
   export default {
     createNewShoutout,
+    updateShoutout,
+    deleteShoutout,
     getAllShoutouts,
   };

@@ -2,6 +2,12 @@ import {
     LOAD_SHOUTOUTS_INIT,
     LOAD_SHOUTOUTS_SUCCESS,
     LOAD_SHOUTOUTS_FAIL,
+    UPDATE_SHOUTOUT_INIT,
+    UPDATE_SHOUTOUT_SUCCESS,
+    UPDATE_SHOUTOUT_FAIL,
+    DELETE_SHOUTOUT_INIT,
+    DELETE_SHOUTOUT_SUCCESS,
+    DELETE_SHOUTOUT_FAIL,
     SET_SELECTED_SHOUTOUT,
     ADD_SHOUTOUT_SUCCESS,
     ShoutoutActionTypes,
@@ -18,6 +24,7 @@ import {
   const shoutoutReducer = (state = initialState, action: ShoutoutActionTypes) => {
     switch (action.type) {
         case SET_SELECTED_SHOUTOUT: {
+          console.log(`haim select shoutout ${JSON.stringify(action.payload)}`)
             return Object.assign({}, state, {
               selectedShoutout: { ...action.payload },
             });
@@ -45,6 +52,45 @@ import {
                 isLoading: false,
             });
           }
+
+          case UPDATE_SHOUTOUT_INIT: {
+            return Object.assign({}, state, {
+              isLoading: true,
+            });
+          }
+          case UPDATE_SHOUTOUT_FAIL: {
+            return Object.assign({}, state, {
+              isLoading: false,
+            });
+          }
+
+          case UPDATE_SHOUTOUT_SUCCESS: {
+            return Object.assign({}, state, {
+              shoutoutsCount: 0,
+              isLoading: false,
+            });
+          }
+
+          case DELETE_SHOUTOUT_INIT: {
+            return state;
+          }
+          case DELETE_SHOUTOUT_FAIL: {
+            return state;
+          }
+
+          case DELETE_SHOUTOUT_SUCCESS: {
+            console.log(`haim delete payload ${JSON.stringify(action)}`);
+            const deletedRecord = action.payload.data.shoutoutid;
+            console.log(`haim delete deletedRecord ${deletedRecord}`);
+            console.log(`haim delete success before ${state.shoutouts.length}`);
+            const shoutouts = state.shoutouts.filter((x) => x.id !== deletedRecord);
+            console.log(`haim delete success afater ${shoutouts.length}`);
+            return Object.assign({}, state, {
+              shoutouts: shoutouts,
+            });
+          }
+
+
           case ADD_SHOUTOUT_SUCCESS: {
             return Object.assign({}, state, {
               shoutoutsCount: state.shoutoutsCount+1,

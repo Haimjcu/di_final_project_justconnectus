@@ -18,17 +18,15 @@ import { useTranslation } from "@Translations";
 import clsx from "clsx";
 import { useFormik } from "formik";
 import Close from "icons/Close";
-import { initialState } from "@Store/rootReducer";
 import React, {useEffect,useState, useMemo} from "react";
-import { useSelector } from "react-redux";
 import { ModalType } from "@Utils/constants";
 
 export default function ContactInfo(props: any) {
   const {
     open,
     getSkills,
-    title,
-    description,
+    selected,
+    editSkills,
     skills,
     updateShoutout,
     showNotification,
@@ -40,12 +38,16 @@ export default function ContactInfo(props: any) {
   } = props;
   const { t } = useTranslation();
   const globalClasses = globalUseStyles();
-  const [selectedSkills, setSelctedSkills] = useState<any[]>();
   const [countries, setCountries] = useState<optionType[]>([]);
   const [states, setStates] = useState<optionType[]>([]);
-  const isLoading = useSelector(
-    (state: typeof initialState) => state.shoutout.isLoading,
+
+  const [selectedSkills, setSelctedSkills] = useState<any[]>(
+    editSkills.map((sk: any) => ({
+      label: sk.skill.skill,
+      value: sk.skill.id,
+    })),
   );
+
   const israelStates = [
     {
       label: 'Judea',
@@ -65,15 +67,26 @@ export default function ContactInfo(props: any) {
   const newSkills = selectedSkills?.map((item) => item.value);
 
   const formik = useFormik({
-    initialValues: {
-      title,
-      description,
-      country,
-      state,
+    initialValues: Object.keys(selected).length
+    ? { 
+      id: selected.id,
+      title: selected.title,
+      description: selected.description,
+      country: selected.country,
+      state: selected.state
+      }
+    : 
+     {
+      id: 0,
+      title: "",
+      description: "",
+      country: country,
+      state: state
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
-      const response = await updateShoutout({title: values.title , description: values.description,country: values.country,state: values.state, skills: newSkills});
+      const response = await updateShoutout({id: values.id, title: values.title , description: values.description,country: values.country,state: values.state, skills: newSkills});
+      
       if (response.success) {
         handleClose();
         showNotification({
@@ -143,6 +156,10 @@ export default function ContactInfo(props: any) {
       fetchStates();
     }
   }, [formik.values.country, getStatesByCountryCode]);
+
+  useEffect(() => {
+    formik.setFieldValue("country", selected.country || country || "");
+  }, []);
 
   const handleClose = () => {
     closeModal(ModalType.SHOUTOUT_MODAL);
@@ -221,7 +238,7 @@ export default function ContactInfo(props: any) {
                       <AutoComplete
                         label="Country"
                         selectedValue={countries.find(
-                          (countryy) => countryy.value === country,
+                          (x) => x.value === country,
                         )}
                         options={countries}
                         onChange={(option: optionType) =>
@@ -233,7 +250,7 @@ export default function ContactInfo(props: any) {
                       <AutoComplete
                         label="State"
                         selectedValue={states.find(
-                          (statee) => statee.value === state,
+                          (x) => x.value === state,
                         )}
                         options={states}
                         onChange={(option: optionType) =>
@@ -259,7 +276,10 @@ export default function ContactInfo(props: any) {
                 {t("common:cancel")}
               </Button>
               <Button type="submit" variant="contained" color="primary">
-                {t("common:post_shoutout")}
+              {Object.keys(selected).length
+                ? `Update`
+                : `Post Shoutout`
+              }
               </Button>
             </Box>
           </Grid>

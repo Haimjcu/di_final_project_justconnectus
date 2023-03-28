@@ -1,7 +1,7 @@
 import { plainToClass } from "class-transformer";
 import { Shoutouts } from "../entities/shoutout.entity";
 import { ShoutoutSkills } from "../entities/shoutout.skills.entity";
-import { ShoutoutModel } from "../models/shoutout.models";
+import { ShoutoutModel, UpdateShoutoutModel } from "../models/shoutout.models";
 
 const mapShoutoutToEntities = (shoutoutModel: ShoutoutModel, id: number) => {
   const { skills } = shoutoutModel;

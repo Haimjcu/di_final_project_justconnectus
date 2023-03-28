@@ -9,6 +9,15 @@ router.post(
     authorize([]),
     shoutoutController.createNewShoutout
   );
+
+  router.post(
+    "/updateShoutout",
+    authorize([]),
+    shoutoutController.updateShoutout
+  );
+
   router.get("/getAllShoutouts", authorize([]), shoutoutController.getAllShoutouts);
+  router.put("/deleteShoutout", authorize([]), shoutoutController.deleteShoutout);
+  
 
 export default router;

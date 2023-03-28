@@ -12,8 +12,8 @@ import ShoutoutModal from "./ShoutoutModal";
 
 const mapStateToProps = (state: typeof initialState) => ({
   open: state.ui.modal[ModalType.SHOUTOUT_MODAL] || false,
-  title: state.shoutout.selectedShoutout.title || "",
-  description: state.shoutout.selectedShoutout.description || "",
+  selected: state.shoutout.selectedShoutout || {},
+  editSkills: state.shoutout.selectedShoutout.skills || [],
   skills: state.profile.skills,
   country: state.auth.user.country,
   state: state.auth.user.state,

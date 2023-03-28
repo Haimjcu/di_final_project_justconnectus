@@ -14,11 +14,21 @@ const Shoutouts = (props: any) => {
   const globalClasses = globalUseStyles();
   const skillClasses = skillStyle();
   const { t } = useTranslation();
-  const { loadShoutouts,shoutouts, shoutoutsCount, isLoading, userId, openModal } = props;
+  const { loadShoutouts, deleteShoutout, shoutouts, shoutoutsCount, isLoading, userId, openModal, setSelectedShoutout } = props;
   const classes = useStyles();
 
   const handleCreateShoutout = () => {
+    setSelectedShoutout({});
     openModal();
+  };
+
+  const handleEditShoutout = (shoutout:any) => {
+    setSelectedShoutout(shoutout);
+    openModal();;
+  };
+
+  const handleDeleteShoutout = (shoutoutId:number) => {
+    deleteShoutout({shoutoutId: shoutoutId});
   };
 
   useEffect(() => {
@@ -78,7 +88,7 @@ const Shoutouts = (props: any) => {
                         >
                           {`${shoutout?.title}`}
                         </Typography>
-                        <IconButton>
+                        <IconButton onClick={() => handleEditShoutout(shoutout)}>
                           <EditSquare />
                         </IconButton>
                       </Box>
@@ -120,7 +130,7 @@ const Shoutouts = (props: any) => {
               <Button
                 type="button" variant="outlined" color="primary"
                 className={globalClasses.mobileHidden}
-                //onClick={handleClose}
+                onClick={() => handleDeleteShoutout(shoutout.id)}
               >
                 {t("common:delete")}
               </Button>
@@ -130,7 +140,7 @@ const Shoutouts = (props: any) => {
               <Button
                 type="button" variant="outlined" color="primary"
                 className={globalClasses.onlyMobile}
-                //onClick={handleClose}
+                onClick={() => handleDeleteShoutout(shoutout.id)}
               >
                 {t("common:delete")}
               </Button>

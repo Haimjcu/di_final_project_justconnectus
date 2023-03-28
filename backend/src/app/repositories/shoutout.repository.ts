@@ -40,6 +40,36 @@ import {
       }
     }
 
+      public async updateShoutout(shoutoutEntity: Shoutouts, shoutoutId:number) {
+        try {
+          return await getManager().transaction(
+            async (transactionalEntityManager) => {
+              const { skills, ...shoutoutHeader } = shoutoutEntity;
+              const response = await transactionalEntityManager.update(
+                Shoutouts,
+                shoutoutId,
+                shoutoutHeader
+              );
+              await transactionalEntityManager.query(`DELETE FROM shoutout_skills WHERE shoutout_id = ?`, [shoutoutId]);
+              if (appUtilities.isArrayNotNullOrEmpty(skills)) {
+                const mappedSkills = skills.map((skill) => ({
+                  ...skill,
+                  shoutoutId: shoutoutId,
+                  createdAt: shoutoutEntity.createdAt,
+                  createdBy: shoutoutEntity.createdBy,
+                  updatedAt: shoutoutEntity.updatedAt,
+                  updatedBy: shoutoutEntity.updatedBy
+                }));
+                await transactionalEntityManager.insert(ShoutoutSkills, mappedSkills);
+              }
+              return response.raw.insertId;
+            }
+          );
+        } catch (error) {
+          throw error;
+        }
+      }
+
     public async getShoutouts( userId: number) {
         const shoutouts = await getRepository(Shoutouts)
           .createQueryBuilder(Shoutouts.name)
@@ -51,6 +81,23 @@ import {
           )
           .getMany();
         return {shoutouts};
+      }
+
+      public async createOrUpdate(entity: Shoutouts): Promise<Shoutouts> {
+        await this.save(entity);
+        return entity;
+      }
+
+      public async updateIsActive(shoutoutId: number) {
+        const shoutout = await getRepository(Shoutouts).findOne({
+          where: {
+            id: shoutoutId
+          },
+        });
+        if (shoutout) {
+          shoutout.isActive = false;
+          await this.createOrUpdate(shoutout);
+        }
       }
 
 }
