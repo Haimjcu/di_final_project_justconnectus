@@ -24,7 +24,6 @@ import {
   const shoutoutReducer = (state = initialState, action: ShoutoutActionTypes) => {
     switch (action.type) {
         case SET_SELECTED_SHOUTOUT: {
-          console.log(`haim select shoutout ${JSON.stringify(action.payload)}`)
             return Object.assign({}, state, {
               selectedShoutout: { ...action.payload },
             });
@@ -79,12 +78,8 @@ import {
           }
 
           case DELETE_SHOUTOUT_SUCCESS: {
-            console.log(`haim delete payload ${JSON.stringify(action)}`);
             const deletedRecord = action.payload.data.shoutoutid;
-            console.log(`haim delete deletedRecord ${deletedRecord}`);
-            console.log(`haim delete success before ${state.shoutouts.length}`);
             const shoutouts = state.shoutouts.filter((x) => x.id !== deletedRecord);
-            console.log(`haim delete success afater ${shoutouts.length}`);
             return Object.assign({}, state, {
               shoutouts: shoutouts,
             });

@@ -75,7 +75,6 @@ import {
   };
 
   export const deleteShoutout = function (data:any) {
-    console.log(`haim delete action ${JSON.stringify(data)}`);
     const { V1, SHOUTOUTS, DELETE_SHOUTOUT } = API_END_POINTS;
     const url = `${V1}${SHOUTOUTS}${DELETE_SHOUTOUT}`;
 

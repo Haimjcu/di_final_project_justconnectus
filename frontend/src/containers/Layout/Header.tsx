@@ -23,12 +23,13 @@ const Header = (props: any) => {
   const classes = useStyles();
   const push = usePush();
   const handleLinksClick = (url: string) => {
+    setSelectedShoutout({});
     push(url);
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const { loginSuccess, user, logout, openModal, mobileMenuOpen, closeModal } =
+  const { loginSuccess, user, logout, openModal, mobileMenuOpen, closeModal, setSelectedShoutout  } =
     props;
 
   const handleClick = (event: any) => {
@@ -45,6 +46,7 @@ const Header = (props: any) => {
   };
 
   const handleProfileClick = (url: string) => {
+    setSelectedShoutout({});
     push(url);
     handleClose();
   };

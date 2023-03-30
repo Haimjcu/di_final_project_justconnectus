@@ -94,7 +94,6 @@ export default function ContactInfo(props: any) {
           message: t("common:saved_successfully"),
         });
       } else {
-        console.log(`haim error ${JSON.stringify(response)}`);
         showNotification({
           type: "error",
           message: t("common:something_wrong"),
@@ -134,7 +133,7 @@ export default function ContactInfo(props: any) {
   };
 
   const handleStateChange = (state: optionType) => {
-    formik.setFieldValue("state", state?.value);
+    formik.setFieldValue("state", state?.value || "");
   };
 
   useEffect(() => {
@@ -158,7 +157,8 @@ export default function ContactInfo(props: any) {
   }, [formik.values.country, getStatesByCountryCode]);
 
   useEffect(() => {
-    formik.setFieldValue("country", selected.country || country || "");
+    formik.setFieldValue("country", formik.values.country || "");
+    formik.setFieldValue("state", formik.values.state || "");
   }, []);
 
   const handleClose = () => {
@@ -169,7 +169,6 @@ export default function ContactInfo(props: any) {
     setSelctedSkills(items);
   };
 
-  console.log('haim modal');
   return (
     <Modal
       aria-labelledby="add-note-agent-modal-title"
@@ -238,7 +237,7 @@ export default function ContactInfo(props: any) {
                       <AutoComplete
                         label="Country"
                         selectedValue={countries.find(
-                          (x) => x.value === country,
+                          (x) => x.value === formik.values.country,
                         )}
                         options={countries}
                         onChange={(option: optionType) =>
@@ -250,7 +249,7 @@ export default function ContactInfo(props: any) {
                       <AutoComplete
                         label="State"
                         selectedValue={states.find(
-                          (x) => x.value === state,
+                          (x) => x.value === formik.values.state,
                         )}
                         options={states}
                         onChange={(option: optionType) =>

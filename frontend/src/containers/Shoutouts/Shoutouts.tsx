@@ -1,21 +1,30 @@
 import Loader from "@Components/Loader";
 import EditSquare from "@Components/SVG/EditSquare";
+import ReadMore from "@Components/ReadMore";
+import ConfirmationModal from "@Components/ConfirmationModal";
+import usePush from "@Hooks/usePush";
 import globalUseStyles from "@Hooks/styleHooks";
 import { skillStyle } from "@Containers/Profile/ManageSkills/styles";
 import { useTranslation } from "@Translations";
 import { Box, Button, Grid, Typography, IconButton } from "@material-ui/core";
 import clsx from "clsx";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useStyles } from "./styles";
+import { useProfileStyles } from "@Containers/Profile/styles";
 
 
 const Shoutouts = (props: any) => {
   const globalClasses = globalUseStyles();
   const skillClasses = skillStyle();
   const { t } = useTranslation();
-  const { loadShoutouts, deleteShoutout, shoutouts, shoutoutsCount, isLoading, userId, openModal, setSelectedShoutout } = props;
+  const { loadShoutouts, deleteShoutout, shoutouts, shoutoutsCount, showNotification,isLoading, userId, openModal, setSelectedShoutout } = props;
+  const profileClasses = useProfileStyles();
   const classes = useStyles();
+  const [expanded, setExpended] = useState<{ [name: string]: boolean }>({});
+  const [open, setOpen] = useState<boolean>(false);
+  const [id, setSelectedId] = useState<number | null>(null);
+  const push = usePush();
 
   const handleCreateShoutout = () => {
     setSelectedShoutout({});
@@ -27,8 +36,39 @@ const Shoutouts = (props: any) => {
     openModal();;
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const onSuccess = async () => {
+    if (id) {
+      const response = await deleteShoutout({shoutoutId: id});
+      if (response.success) {
+        showNotification({
+          type: "success",
+          message: response.message || t("common:deleted_successfully"),
+        });
+      }
+      handleClose();
+    }
+  };
+
   const handleDeleteShoutout = (shoutoutId:number) => {
-    deleteShoutout({shoutoutId: shoutoutId});
+    setSelectedId(shoutoutId);
+    setOpen(true);
+  };
+
+  const handleSearch = (shoutout:any) => {
+    setSelectedShoutout(shoutout);
+    push("/search");;
+  };
+
+  const handleShowMoreLink = (value: string | number | boolean): void => {
+    const selectedId = value.toString();
+    setExpended({
+      ...expanded,
+      [selectedId]: !expanded[selectedId],
+    });
   };
 
   useEffect(() => {
@@ -70,7 +110,6 @@ const Shoutouts = (props: any) => {
                       mb={1}
                       className={clsx(
                         globalClasses.flex,
-                        globalClasses.alignCenter,
                         classes.details,
                       )}
                     >
@@ -93,9 +132,18 @@ const Shoutouts = (props: any) => {
                         </IconButton>
                       </Box>
                       <Box>
-                        <Typography variant="body2">
-                        {`${shoutout?.description}`}
-                        </Typography>
+                        <ReadMore
+                          className={clsx(
+                            profileClasses.desc,
+                            profileClasses.profileText,
+                          )}
+                          expanded={expanded[shoutout.id]}
+                          onClick={handleShowMoreLink}
+                          limit={400}
+                          id={shoutout.id}
+                        >
+                          {shoutout?.description || ""}
+                        </ReadMore>
                       </Box>
                     </Box>
                   </Box>
@@ -134,7 +182,9 @@ const Shoutouts = (props: any) => {
               >
                 {t("common:delete")}
               </Button>
-              <Button type="button" variant="contained" color="primary">
+              <Button type="button" variant="contained" color="primary"
+              onClick={() => handleSearch(shoutout)}
+              >
                 {t("common:search")}
               </Button>
               <Button
@@ -152,6 +202,13 @@ const Shoutouts = (props: any) => {
         </Grid>
       </Box>
     </Box>
+    <ConfirmationModal
+        heading={"Alert"}
+        message={"Do you want to delete selected shoutout?"}
+        open={open}
+        onSuccess={onSuccess}
+        onClose={handleClose}
+      />
   </>
   );
 };

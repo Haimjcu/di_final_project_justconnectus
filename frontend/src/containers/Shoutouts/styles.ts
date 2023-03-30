@@ -36,6 +36,7 @@ cardCenter: {
 cardContainer: {
     "@media only screen and (max-width:768px)": {
        marginBottom: "2.5rem",
+       width: "100%",
       },
 },
   card: {
@@ -61,7 +62,6 @@ cardContainer: {
     flexDirection: "column",
     "@media only screen and (max-width:768px)": {
       display: "flex",
-      alignItems: "center",
       paddingTop: "0.5rem",
       paddingBottom: "0.75rem",
       border: "1px solid #E3E3E4",
@@ -121,6 +121,7 @@ cardContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "100%",
   },
 
 }));
