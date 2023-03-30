@@ -13,6 +13,7 @@ import PublicProfile from "./PublicProfile";
 import UpdateUserInfo from "./UpdateUserInfo";
 import UserIntroduction from "./UserIntroduction";
 import ShoutoutModal from "./ShoutoutModal";
+import JobModal from "./JobModal";
 
 const Modals = (props: any) => {
   const { modal } = props;
@@ -28,6 +29,7 @@ const Modals = (props: any) => {
       {modal[ModalType.MOBILE_MENU_MODAL] ? <MobileMenuModal /> : null}
       {modal[ModalType.PUBLIC_PROFILE] ? <PublicProfile /> : null}
       {modal[ModalType.SHOUTOUT_MODAL] ? <ShoutoutModal /> : null}
+      {modal[ModalType.JOB_MODAL] ? <JobModal /> : null}
     </>
   );
 };

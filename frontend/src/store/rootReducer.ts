@@ -16,6 +16,9 @@ import profileReducer, {
 import shoutoutReducer, {
   initialState as shoutoutState,
 } from "./shoutout/reducer";
+import jobsReducer, {
+  initialState as jobsState,
+} from "./job/reducer";
 import searchReducer, { initialState as searchState } from "./search/reducer";
 import uiReducer, { initialState as uiState } from "./ui/reducer";
 
@@ -28,6 +31,7 @@ export const initialState = {
   search: searchState,
   messages: messagesState,
   shoutout: shoutoutState,
+  jobs: jobsState,
 };
 
 export default combineReducers({
@@ -39,4 +43,5 @@ export default combineReducers({
   search: searchReducer,
   messages: messagesReducer,
   shoutout: shoutoutReducer,
+  jobs: jobsReducer,
 });

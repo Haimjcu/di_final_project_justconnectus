@@ -1,5 +1,6 @@
 import { getCustomRepository } from "typeorm";
 import { ShoutoutRepository } from "../repositories/shoutout.repository";
+import { JobsRepository } from "../repositories/jobs.repository";
 import shoutoutUtilities from "../utilities/shoutout.utilities";
 import {ShoutoutModel} from "../models/shoutout.models";
 import responseFormatter from "../utilities/response.formatter";
@@ -17,6 +18,11 @@ const createNewShoutout = async (shoutoutModel: ShoutoutModel, id: number) => {
   const shoutoutId = await getCustomRepository(
     ShoutoutRepository
   ).createShoutout(shoutoutEntity);
+  
+  const jobs = await getCustomRepository(
+    JobsRepository
+  ).createJobs(id, shoutoutId);
+
   return { shoutoutId };
 };
 

@@ -91,7 +91,7 @@ const Header = (props: any) => {
                 </Link>
                 <Link
                   component="button"
-                  // onClick={() => handleLinksClick("/jobs")}
+                  onClick={() => handleLinksClick("/jobs")}
                 >
                   <Typography variant="h5" className={classes.title}>
                     Jobs

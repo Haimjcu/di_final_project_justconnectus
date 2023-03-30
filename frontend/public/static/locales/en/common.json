@@ -49,5 +49,8 @@
   "connect": "Connect",
   "my_shoutouts": "My SHOUT OUTs",
   "create_a_shoutout": "Create A Shout Out",
-  "post_shoutout": "Post Shout Out"
+  "post_shoutout": "Post Shout Out",
+  "available_connectors": "Available connectors",
+  "skills_required": "Skills required",
+  "job_description": "Job Description"
 }

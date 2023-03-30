@@ -8,6 +8,7 @@ const API_END_POINTS = {
   CONTACTS: "/contacts",
   PROFILE: "/profile",
   SHOUTOUTS: "/shoutouts",
+  JOBS: "/jobs",
   ME: "/me",
   CHANGE_PASSWORD: "/changePassword",
   FORGET_PASSWORD: "/forgetPassword",
@@ -56,6 +57,7 @@ const API_END_POINTS = {
   UPDATE_SHOUTOUT: "/updateShoutout",
   DELETE_SHOUTOUT: "/deleteShoutout",
   GET_ALL_SHOUTOUTS: "/getAllShoutouts",
+  GET_ALL_JOBS: "/getAllJobs",
 };
 
 const API_METHODS = {
