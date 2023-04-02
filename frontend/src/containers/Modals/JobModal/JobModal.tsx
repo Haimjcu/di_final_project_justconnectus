@@ -23,6 +23,7 @@ import { useProfileStyles } from "@Containers/Profile/styles";
 import { useSearchStyles } from "@Containers/Search/SearchResult/styles";
 import { skillStyle } from "@Containers/Profile/ManageSkills/styles";
 import { useStyles } from "./styles";
+import usePush from "@Hooks/usePush";
 
 
 export default function ContactInfo(props: any) {
@@ -30,7 +31,9 @@ export default function ContactInfo(props: any) {
     open,
     job,
     closeModal,
+    addConnector,
   } = props;
+  const push = usePush();
   const { t } = useTranslation();
   const globalClasses = globalUseStyles();
   const jobsClasses = useJobStyles();
@@ -53,13 +56,32 @@ export default function ContactInfo(props: any) {
     });
   };
 
-  const handleAskAbout = ( connectorId:any ) => {
+  const submitAddConnector = async (request: any) => {
+    const response = await addConnector(request);
+    if (response.success) {
+      handleClose();
+      push("/messages");
+    }
+  };
+
+  const handleAskAbout = ( connectorId:number ) => {
     const request = {
       connectorId,
-      providerId: 0,
-      searchMetaId: 0,
+      providerId: job.userId,
+      searchMetaId: null,
+      shoutoutId: job.id,
     };
-    //submitSearchMeta(request);
+    submitAddConnector(request);
+  };
+
+  const handleStartChat = () => {
+    const request = {
+      connectorId: null,
+      providerId: job.userId,
+      searchMetaId: null,
+      shoutoutId: job.id,
+    };
+    submitAddConnector(request);
   };
 
 
@@ -171,7 +193,7 @@ export default function ContactInfo(props: any) {
                           variant="contained"
                           color="secondary"
                           className={classes.actionBtn}
-                          //onClick={handleStartChat}
+                          onClick={handleStartChat}
                         >
                           Start Chat
                         </Button>
@@ -184,7 +206,7 @@ export default function ContactInfo(props: any) {
                   className={clsx(globalClasses.flex, classes.buttons, globalClasses.onlyMobile)}
                   style={{ gap: 8, marginTop: "1 rem" }}                >
                   <ButtonBase className={clsx(classes.buttonMobile)}
-                  // onClick={handleStartChat}
+                  onClick={handleStartChat}
                   >
                   Start Chat
                   </ButtonBase>

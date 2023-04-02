@@ -1,4 +1,4 @@
-import { plainToClass } from "class-transformer";
+import { classToPlain,plainToClass } from "class-transformer";
 import { Shoutouts } from "../entities/shoutout.entity";
 import { ShoutoutSkills } from "../entities/shoutout.skills.entity";
 import { ShoutoutModel, UpdateShoutoutModel } from "../models/shoutout.models";
@@ -28,7 +28,22 @@ const mapShoutoutToEntities = (shoutoutModel: ShoutoutModel, id: number) => {
   }
   return shoutoutEntity;
 };
+const mapShoutoutDetailToModel = (shoutouts: Shoutouts, id: number) => {
+let shoutoutDetail = classToPlain(shoutouts);
+const { skills, id: shoutoutId, ...rest } = shoutoutDetail;
+const mappedSkill = skills.map((x: ShoutoutSkills) => ({
+  id: x.skillId,
+  name: x.skill.skill,
+}));
+rest.skills = mappedSkill;
+rest.searchMetaId = null;
+rest.seekerUser = {};
+rest.connectorUser = {};
+rest.providerUser = {};
+return rest;
+};
 
 export default {
   mapShoutoutToEntities,
+  mapShoutoutDetailToModel,
 };

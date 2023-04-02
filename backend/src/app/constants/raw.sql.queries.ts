@@ -30,7 +30,7 @@ export const rawSqlQueries = {
   where shoutout_id=:shoutoutId and user_id is not null
   and user_id != :userId and u.is_active=1
   group by user_id`,
-  GET_JOB_HEADERS: `select j.shoutout_id as id ,u.url, u.first_name as firstname, u.last_name as lastname, u.profile_pic as profilePic, u.title as profileTitle, sh.title as title, sh.description as description, sh.created_by as shoutoutUserId
+  GET_JOB_HEADERS: `select j.shoutout_id as id ,u.id as userid, u.url, u.first_name as firstname, u.last_name as lastname, u.profile_pic as profilePic, u.title as profileTitle, sh.title as title, sh.description as description, sh.created_by as shoutoutUserId
   from jobs j
   left join shoutout_header sh on j.shoutout_id = sh.id
   left join user u on sh.created_by = u.id

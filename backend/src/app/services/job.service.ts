@@ -53,6 +53,7 @@ const getAllJobs = async (userId: number) => {
 
     const job = {
       id: jobHeader.id,
+      userId: jobHeader.userid,
       url: jobHeader.url,
       firstname: jobHeader.firstname,
       lastname: jobHeader.lastname,

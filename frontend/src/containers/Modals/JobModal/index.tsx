@@ -1,4 +1,5 @@
 import { showNotification } from "@Store/notification/actions";
+import { addConnector } from "@Store/messages/actions";
 import { initialState } from "@Store/rootReducer";
 import { closeModal } from "@Store/ui/actions";
 import { ModalType } from "@Utils/constants";
@@ -22,6 +23,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       },
       dispatch,
     ),
+    addConnector,
   };
 };
 

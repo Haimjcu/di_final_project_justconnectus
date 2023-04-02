@@ -100,4 +100,16 @@ import {
         }
       }
 
+      public async getShoutoutDetails(shoutoutId: number) {
+        const shoutoutDetails = await getRepository(Shoutouts)
+          .createQueryBuilder(Shoutouts.name)
+          .innerJoinAndSelect(`${Shoutouts.name}.skills`, `${ShoutoutSkills.name}`)
+          .innerJoinAndSelect(`${ShoutoutSkills.name}.skill`, `${Skills.name}`)
+          .where(`${Shoutouts.name}.id = :id`, {
+            id: shoutoutId,
+          })
+          .getOne();
+        return shoutoutDetails;
+      }
+
 }
