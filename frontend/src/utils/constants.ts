@@ -186,6 +186,12 @@ export enum ConnectStatus {
   CONNECTED = "CONNECTED",
 }
 
+export enum ConnectType {
+  MESSAGE = "MESSAGE",
+  SEARCH = "SEARCH",
+  SHOUTOUT = "SHOUTOUT",
+}
+
 export enum UserStatus {
   CREATED = "CREATED",
   PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
