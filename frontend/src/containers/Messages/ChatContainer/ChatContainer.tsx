@@ -46,21 +46,23 @@ const ChatContainer = (props: any) => {
   return (
     <Box>
       <Box>
-        { title !=="" ? (
-          <Box className={classes.chipButton}>
-          {title}
-          </Box>        
-        ) : null}
+        <Box>
+          { title !=="" ? (
+            <Box className={classes.chipButton}>
+            {title}
+            </Box>        
+          ) : null}
 
-        {skills?.map((skill: any) => (
-          <Chip
-            key={skill.id}
-            className={classes.chipSkill}
-            variant="default"
-            size="medium"
-            label={skill.name}
-          />
-        ))}
+          {skills?.map((skill: any) => (
+            <Chip
+              key={skill.id}
+              className={classes.chipSkill}
+              variant="default"
+              size="medium"
+              label={skill.name}
+            />
+          ))}
+        </Box>
         <Box className={classes.ChatContainer}>
           <Box className={classes.messageChatBox}>
             <Box className={classes.employeeDet}>

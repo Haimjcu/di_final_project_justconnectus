@@ -67,7 +67,7 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     gap: "16px",
-    height: "calc(100vh - 200px)",
+    height: "60vh",
     overflow: "hidden",
     "@media (max-width: 767px)": {
       height: "calc(100vh - 80px)",
